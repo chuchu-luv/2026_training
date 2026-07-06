@@ -1,10 +1,11 @@
+
 <!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#146be8" />
-  <title>연수 종합안내</title>
+  <title>2026 38기 전문직 연수 종합안내</title>
   <style>
     :root{
       --blue:#146be8;--blue-deep:#0e57ca;--navy:#142b5f;--ink:#1d2a42;--muted:#72809a;--line:#dfe8f5;--page:#edf6ff;
@@ -218,8 +219,83 @@
     }
     function showLesson(date,index){const day=getDay(date),item=day.items[index];if(item.type==='meal'){showMeal(day,item);return}if(/분임토의/.test(item.title)){showGroupLesson(day,item);return}const [speaker,syllabus]=DETAILS[item.courseKey||item.title]||['추후 안내',['세부 교수요목은 마주온 소통톡 공지를 확인해 주세요.']];const target=item.audience!=='all'?`<div><dt>대상</dt><dd>${audienceText(item.audience)}</dd></div>`:'';openModal('수업 상세',`<span class="modal-label">${day.label} · ${item.start} ~ ${item.end}</span><h3>${esc(item.title)}</h3><dl class="detail-grid"><div><dt>강사</dt><dd>${esc(speaker)}</dd></div><div><dt>장소</dt><dd>${esc(item.location)}</dd></div>${target}<div><dt>연수 형태</dt><dd>${sessionType(day)}</dd></div></dl><h4>교수요목</h4><ul>${syllabus.map(s=>`<li>${esc(s)}</li>`).join('')}</ul><p style="font-size:12px;color:#71809a">※ 운영 상황에 따라 세부 내용 및 장소는 변경될 수 있습니다.</p>`) }
     function showMeal(day=getDay(),item){item=item||day.items.find(i=>i.type==='meal');const type=item?.mealType||'lunch';const menu=state.meals[day.date]?.[type]||[];openModal(`${day.label} ${item?.title||'식단'}`,`<span class="modal-label">${item?.start||'12:00'} ~ ${item?.end||'13:00'} · ${esc(item?.location||'식당')}</span><h3>오늘의 식단</h3>${menu.length?`<ul>${menu.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:'<p>등록된 식단이 없습니다.</p>'}${allergyHtml()}`)}
-    function showGuide(key){const groups=groupedGroupsHtml();const items={place:['연수 장소',`<span class="modal-label">장소 안내</span><h3>주요 장소</h3><ul><li><b>집합연수:</b> 충청남도교육청교육연수원 승지관 202호</li><li><b>7.20. 중등 분반:</b> 승지관 302호</li><li><b>현장체험:</b> 덕산 스플라스 리솜, 진로융합교육원</li><li><b>화상연수:</b> 자택 또는 근무지</li></ul>`],materials:['연수 자료',`<span class="modal-label">자료실</span><h3>연수 자료 바로가기</h3><p>연수 안내문, 교육과정 안내, 과제 양식 등을 확인합니다.</p><a class="action" href="${MATERIALS_LINK}" target="_blank" rel="noopener">자료실 열기 ↗</a>`],chat:['마주온 소통톡',`<span class="modal-label">네이버웍스</span><h3>마주온 소통톡</h3><p>연수 안내, 자료 공유, 과제 공지를 수시로 확인하세요.</p><div class="notice">채널 ID<br><b>${CHANNEL_ID}</b></div><button class="copy" id="copyChannel">채널 ID 복사</button>`],zoom:['실시간 쌍방향 화상연수 안내',`<span class="modal-label">2026. 7. 28.(화)</span><h3>실시간 쌍방향 화상연수 안내</h3><p><b>가. 수강기간:</b> 2026. 7. 28.(화)</p><p><b>나. 방법:</b> 줌(zoom) 접속 후 수강<br>※ 줌 아이디: <b>851 851 6175</b> / 비밀번호: <b>1234</b></p><p><b>다. 유의사항</b></p><ul><li>수강 전 개인 데스크탑 또는 노트북에 줌(zoom)을 설치합니다.</li><li>접속 시 참가자명을 반드시 <b>OO중 이몽룡</b> 형식으로 수정합니다.</li><li>연수 시간에 수업·회의 등 다른 일정과 중복되지 않도록 사전 조치합니다.</li><li>연수 중에는 상시 카메라(비디오)를 켜야 출석이 인정되며, 얼굴 확인이 되지 않으면 결석 처리될 수 있습니다.</li></ul><a class="action" href="${ZOOM_LINK}" target="_blank" rel="noopener">Zoom 수업 입장 ↗</a><a class="sub-action" href="https://www.zoom.com/ko" target="_blank" rel="noopener">Zoom 설치하기 ↗</a>`],groups:['분반·분임 안내',`<span class="modal-label">시트 연동</span><h3>분반·분임 장소</h3>${groups}`]};const [title,html]=items[key];openModal(title,html);if(key==='chat'){document.querySelector('#copyChannel').onclick=()=>{navigator.clipboard?.writeText(CHANNEL_ID);document.querySelector('#copyChannel').textContent='복사했어요 ✓'}}}
-    function renderGuide(){const guide=[['place','📍','연수 장소','날짜별 장소와 분임실 안내'],['groups','👥','분반·분임 안내','시트에서 장소 자동 반영'],['materials','📄','연수 자료','안내문·과제·각종 자료'],['chat','💬','마주온 소통톡','공지와 자료 공유 확인'],['zoom','💻','화상연수 안내','7.28.(화) Zoom 접속']];document.querySelector('#guideList').innerHTML=guide.map(([key,icon,title,sub])=>`<button class="guide" data-guide="${key}"><span class="guide-icon">${icon}</span><span><h3>${title}</h3><p>${sub}</p></span></button>`).join('');document.querySelectorAll('[data-guide]').forEach(b=>b.onclick=()=>showGuide(b.dataset.guide))}
+    function showGuide(key){
+      const groups=groupedGroupsHtml();
+      const items={
+        place:['연수 장소',`
+          <span class="modal-label">장소 안내</span>
+          <h3>주요 장소</h3>
+          <ul>
+            <li><b>집합연수:</b> 충청남도교육청교육연수원 승지관 202호</li>
+            <li><b>현장체험:</b> 덕산 스플라스 리솜, 진로융합교육원</li>
+            <li><b>화상연수:</b> 자택 또는 근무지</li>
+          </ul>
+          <section class="place-branch">
+            <h4>7.20.(월) 분반 강의</h4>
+            <p><strong>유·초등(특수 포함) 교사</strong> · 승지관 202호<br>과학업무의 실제(11:00~11:50), 영재교육의 실제(13:00~13:50)</p>
+            <p><strong>중등교사</strong> · 승지관 302호<br>고교학점제 운영 톺아보기(11:00~13:50)</p>
+          </section>
+        `],
+        duty:['복무 안내',`
+          <span class="modal-label">출장 처리 안내</span>
+          <h3>복무 정보</h3>
+          <section class="duty-section">
+            <article class="duty-card">
+              <div class="duty-card-head">집합연수</div>
+              <div class="duty-card-body">
+                <p><b>해당 일자</b> · 7.16.(목)~7.20.(월), 7.23.(목)~7.27.(월), 7.29.(수)~7.30.(목)</p>
+                <p><b>복무</b> · 여비부지급 출장처리</p>
+                <p><b>출장지</b> · 충청남도교육청교육연수원</p>
+                <p><b>출장 목적</b> · 2026 교육전문직원 임용예정자 직무연수 참여</p>
+              </div>
+            </article>
+            <article class="duty-card">
+              <div class="duty-card-head">현장체험연수</div>
+              <div class="duty-card-body">
+                <p><b>해당 일자</b> · 7.21.(화)~7.22.(수), 1박 2일</p>
+                <p><b>복무</b> · 여비부지급 출장처리</p>
+                <p><b>출장지</b> · 덕산 스플라스 리솜, 진로융합교육원</p>
+                <p><b>출장 목적</b> · 2026 교육전문직원 임용예정자 직무연수 참여</p>
+              </div>
+            </article>
+            <article class="duty-card">
+              <div class="duty-card-head">실시간 쌍방향 화상연수</div>
+              <div class="duty-card-body">
+                <p><b>일시</b> · 7.28.(화) 09:00~17:00</p>
+                <p><b>복무</b> · 여비부지급 출장처리 <span style="color:#71809a">(여비 지급 없음)</span></p>
+                <p><b>출장지</b> · 자택 또는 소속기관</p>
+                <p><b>출장 목적</b> · 2026 교육전문직원 임용예정자 직무연수 과정 원격연수 참가</p>
+              </div>
+            </article>
+          </section>
+          <div class="notice">※ 화상연수일에 수업결손이 예상되면 사전 결·보강 계획 등 예방조치를 하고, 연수 수강에 전념합니다.</div>
+        `],
+        materials:['연수 자료',`<span class="modal-label">자료실</span><h3>연수 자료 바로가기</h3><p>연수 안내문, 교육과정 안내, 과제 양식 등을 확인합니다.</p><a class="action" href="${MATERIALS_LINK}" target="_blank" rel="noopener">자료실 열기 ↗</a>`],
+        chat:['마주온 소통톡',`<span class="modal-label">네이버웍스</span><h3>마주온 소통톡</h3><p>연수 안내, 자료 공유, 과제 공지를 수시로 확인하세요.</p><div class="notice">채널 ID<br><b>${CHANNEL_ID}</b></div><button class="copy" id="copyChannel">채널 ID 복사</button>`],
+        zoom:['실시간 쌍방향 화상연수 안내',`<span class="modal-label">2026. 7. 28.(화)</span><h3>실시간 쌍방향 화상연수 안내</h3><p><b>가. 수강기간:</b> 2026. 7. 28.(화)</p><p><b>나. 방법:</b> 줌(zoom) 접속 후 수강<br>※ 줌 아이디: <b>851 851 6175</b> / 비밀번호: <b>1234</b></p><p><b>다. 유의사항</b></p><ul><li>수강 전 개인 데스크탑 또는 노트북에 줌(zoom)을 설치합니다.</li><li>접속 시 참가자명을 반드시 <b>OO중 이몽룡</b> 형식으로 수정합니다.</li><li>연수 시간에 수업·회의 등 다른 일정과 중복되지 않도록 사전 조치합니다.</li><li>연수 중에는 상시 카메라(비디오)를 켜야 출석이 인정되며, 얼굴 확인이 되지 않으면 결석 처리될 수 있습니다.</li></ul><a class="action" href="${ZOOM_LINK}" target="_blank" rel="noopener">Zoom 수업 입장 ↗</a><a class="sub-action" href="https://www.zoom.com/ko" target="_blank" rel="noopener">Zoom 설치하기 ↗</a>`],
+        groups:['분반·분임 안내',`<span class="modal-label">시트 연동</span><h3>분반·분임 장소</h3>${groups}`]
+      };
+      const [title,html]=items[key];
+      openModal(title,html);
+      if(key==='chat'){
+        document.querySelector('#copyChannel').onclick=()=>{
+          navigator.clipboard?.writeText(CHANNEL_ID);
+          document.querySelector('#copyChannel').textContent='복사했어요 ✓';
+        };
+      }
+    }
+    function renderGuide(){
+      const guide=[
+        ['place','📍','연수 장소','집합·분반·현장체험 장소 안내'],
+        ['duty','💼','복무 안내','출장 처리와 출장지 안내'],
+        ['groups','👥','분반·분임 안내','시트에서 장소 자동 반영'],
+        ['materials','📄','연수 자료','안내문·과제·각종 자료'],
+        ['chat','💬','마주온 소통톡','공지와 자료 공유 확인'],
+        ['zoom','💻','화상연수 안내','7.28.(화) Zoom 접속']
+      ];
+      document.querySelector('#guideList').innerHTML=guide.map(([key,icon,title,sub])=>`<button class="guide" data-guide="${key}"><span class="guide-icon">${icon}</span><span><h3>${title}</h3><p>${sub}</p></span></button>`).join('');
+      document.querySelectorAll('[data-guide]').forEach(b=>b.onclick=()=>showGuide(b.dataset.guide));
+    }
     function showNotices(){openModal('공지사항',`<span class="modal-label">필독</span><h3>연수 전·중 확인 사항</h3><ul><li>개별 과제와 연수 자료는 마주온 소통톡에서 안내됩니다.</li><li>장소·식단 변동은 소통방 공지를 수시로 확인하세요.</li><li>7.28.(화)는 실시간 쌍방향 화상연수일입니다.</li></ul>`)}
     function openTestTime(){const current=appNow();const date=dateKey(current);const time=`${String(current.getHours()).padStart(2,'0')}:${String(current.getMinutes()).padStart(2,'0')}`;openModal('시간 테스트',`<span class="modal-label">테스트 전용</span><h3>날짜와 시간 임의 지정</h3><p>상단의 ‘다음 연수일’을 누르면 언제든 다시 설정할 수 있어요.</p><div class="test-box"><label>날짜<input id="testDate" type="date" value="${date}"></label><label>시간<input id="testTime" type="time" value="${time}"></label></div><div class="test-actions"><button class="test-apply" id="applyTestTime">적용</button><button class="test-reset" id="resetTestTime">실제 시간으로</button></div>`);document.querySelector('#applyTestTime').onclick=()=>{const d=document.querySelector('#testDate').value,t=document.querySelector('#testTime').value;if(!d||!t)return;state.mockNow=`${d}T${t}:00`;state.selected=d;modal.close();renderToday();renderAll();switchView('today')};document.querySelector('#resetTestTime').onclick=()=>{state.mockNow=null;state.selected=initialDate();modal.close();renderToday();renderAll();switchView('today')}}
     function switchView(v){document.querySelectorAll('.view').forEach(el=>el.hidden=el.id!==v+'View');document.querySelectorAll('[data-view]').forEach(el=>el.classList.toggle('active',el.dataset.view===v));if(v==='all')renderAll();if(v==='guide')renderGuide();window.scrollTo({top:0,behavior:'smooth'})}
