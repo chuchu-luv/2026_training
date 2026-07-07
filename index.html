@@ -7,6 +7,12 @@
   <meta name="theme-color" content="#146be8" />
   <title>2026 38기 전문직 연수 종합안내</title>
   <style>
+    @font-face {
+      font-family: 'OmuDaye';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+      font-weight: normal;
+      font-display: swap;
+    }
     :root{
       --blue:#146be8;--blue-deep:#0e57ca;--navy:#142b5f;--ink:#1d2a42;--muted:#72809a;--line:#dfe8f5;--page:#edf6ff;
       --pink:#fff7fb;--pink-time:#ffedf6;--pink-line:#f3dce8;--pink-ink:#8e6f80;
@@ -17,7 +23,9 @@
       --meal:#f6f8fb;--meal-time:#eaf0f6;--meal-line:#dce3eb;--meal-ink:#68758a;
       --shadow:0 7px 20px rgba(41,80,145,.08);
     }
-    *{box-sizing:border-box}html{background:#e6f1ff}body{margin:0;background:linear-gradient(180deg,#eaf4ff 0%,#fbfdff 38%,#edf5ff 100%);font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}button,a{font:inherit;color:inherit}button{cursor:pointer}
+    *{box-sizing:border-box}html{background:#e6f1ff}body{margin:0;background:linear-gradient(180deg,#eaf4ff 0%,#fbfdff 38%,#edf5ff 100%);font-family:'OmuDaye',Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}button,a{font:inherit;color:inherit}button{cursor:pointer}
+    /* 제목·탭은 기존의 또렷한 서체를 유지하고, 본문만 오뮤다예체를 적용합니다. */
+    h1,h2,h3,h4,.eyebrow,.badge,.tabs,.tab,.section-kicker,.section-head,.day-title,.day-arrow,.calendar-month,.calendar-weekdays,.bottom,.modal-head,.outline-btn,.track,.track-btn,.guide h3{font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif}
     .app{width:min(100%,510px);min-height:100dvh;margin:auto;padding:calc(18px + env(safe-area-inset-top)) 16px calc(88px + env(safe-area-inset-bottom))}.topbar,.section-head,.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.eyebrow{margin:0 0 3px;color:var(--blue);font-size:12px;font-weight:850;letter-spacing:-.03em}h1{margin:0;color:var(--navy);font-size:26px;letter-spacing:-.06em}.bell{width:45px;height:45px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 5px 14px rgba(54,102,177,.08);font-size:20px}
     .hero{position:relative;overflow:hidden;min-height:165px;margin-top:14px;padding:21px;border-radius:21px;background:linear-gradient(125deg,#fff 8%,#eaf4ff 100%);box-shadow:0 9px 26px rgba(31,88,175,.11)}.hero-copy{position:relative;z-index:1;max-width:72%}.badge{display:inline-block;padding:4px 9px;border-radius:999px;background:#eaf3ff;color:var(--blue);font-size:11px;font-weight:850}.hero h2{margin:9px 0 8px;color:var(--navy);font-size:27px;line-height:1.17;letter-spacing:-.065em}.hero p{margin:0;color:#52617b;font-size:13px;font-weight:720;line-height:1.55}.orb{position:absolute;border-radius:50%;background:rgba(38,121,245,.16)}.orb.a{width:155px;height:155px;right:-32px;bottom:-25px}.orb.b{width:83px;height:83px;right:43px;top:18px;background:rgba(38,121,245,.23)}.sparkle{position:absolute;right:48px;top:30px;color:var(--blue);font-size:34px;opacity:.55}
     .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:5px;margin:17px 0;border:1px solid #e2ebf8;border-radius:17px;background:#fff;box-shadow:0 5px 16px rgba(52,103,185,.06)}.tab{border:0;padding:13px 6px;border-radius:12px;background:transparent;color:#667088;font-size:15px;font-weight:830}.tab.active{background:var(--blue);color:#fff;box-shadow:0 6px 14px rgba(20,107,232,.24)}.view{animation:fade .18s ease both}@keyframes fade{from{opacity:.2;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
@@ -38,13 +46,34 @@
     .calendar-help{margin:0;padding:0 15px 13px;color:#78859b;font-size:11px;font-weight:700}.calendar-track{margin-top:12px}.selected-day-panel{margin-top:12px}.selected-day-card{overflow:hidden;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:var(--shadow)}.selected-day-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 15px 12px;border-bottom:1px solid #edf1f7}.selected-day-head p{margin:0 0 3px;color:var(--blue);font-size:11px;font-weight:850}.selected-day-head h3{margin:0;color:var(--navy);font-size:19px;letter-spacing:-.05em}.selected-day-meta{flex:0 0 auto;padding:6px 8px;border-radius:999px;background:#eef5ff;color:var(--blue);font-size:11px;font-weight:850;white-space:nowrap}.selected-day-list{display:grid;gap:9px;padding:10px}.selected-day-empty{padding:24px 15px;color:#7d8ba0;text-align:center;font-size:13px}
     .guide-grid{display:grid;gap:10px}.guide{display:flex;align-items:center;gap:13px;width:100%;padding:15px;border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:0 5px 14px rgba(58,104,179,.05);text-align:left}.guide-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:#edf5ff;font-size:19px}.guide h3{margin:0 0 3px;color:var(--navy);font-size:15px}.guide p{margin:0;color:#70809b;font-size:12px;font-weight:650}.empty{padding:26px 15px;border:1px dashed #cad8ee;border-radius:16px;background:#fff;color:#71809a;text-align:center;font-size:13px}
     .bottom{position:fixed;z-index:5;bottom:0;left:50%;width:min(100%,510px);transform:translateX(-50%);display:grid;grid-template-columns:repeat(3,1fr);padding:7px 16px calc(7px + env(safe-area-inset-bottom));border-top:1px solid #e2ebf8;background:rgba(255,255,255,.95);backdrop-filter:blur(12px)}.bottom button{border:0;background:transparent;color:#74819a;padding:5px 3px;font-size:11px;font-weight:800}.bottom button span{display:block;font-size:20px;line-height:1.1}.bottom button.active{color:var(--blue)}
-    dialog{width:min(calc(100% - 30px),470px);max-height:min(82dvh,720px);padding:0;border:0;border-radius:21px;box-shadow:0 20px 60px rgba(11,37,84,.25)}dialog::backdrop{background:rgba(12,30,67,.34);backdrop-filter:blur(2px)}.modal-head{position:sticky;top:0;z-index:1;padding:17px 17px 12px;border-bottom:1px solid #edf1f7;background:#fff}.modal-head h2{margin:0;color:var(--navy);font-size:18px}.close{width:34px;height:34px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:20px}.modal-body{padding:18px;color:#394861;line-height:1.65}.modal-label{display:inline-block;margin-bottom:8px;color:var(--blue);font-size:12px;font-weight:850}.modal-body h3{margin:0 0 12px;color:var(--navy);font-size:22px;line-height:1.3;letter-spacing:-.05em}.modal-body h4{margin:18px 0 7px;color:var(--navy);font-size:15px}.modal-body p{margin:7px 0;font-size:14px}.modal-body ul{margin:7px 0;padding-left:20px;font-size:14px}.modal-body li{margin:4px 0}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.detail-grid div{padding:10px;border-radius:12px;background:#f7faff}.detail-grid dt{color:#72809a;font-size:11px;font-weight:800}.detail-grid dd{margin:3px 0 0;color:#263754;font-size:13px;font-weight:760;line-height:1.45}.notice{margin:14px 0;padding:12px;border-radius:13px;background:#fff9ed;color:#765a2e;font-size:13px}.action{display:block;margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--blue);color:#fff;text-decoration:none;text-align:center;font-size:14px;font-weight:850}.sub-action{display:block;margin-top:8px;color:var(--blue);text-align:center;font-size:13px;font-weight:800}.copy{width:100%;margin-top:10px;padding:11px;border:1px solid #c4ddff;border-radius:11px;background:#f7fbff;color:var(--blue);font-size:13px;font-weight:850}.allergy{margin-top:18px;padding-top:14px;border-top:1px solid #edf0f5}.allergy h4{margin:0 0 5px}.allergy p{margin:0;color:#69758d;font-size:11px;line-height:1.6}.group-note{margin:-3px 0 13px!important;color:#71809a!important;font-size:13px!important}.group-block{overflow:hidden;margin:12px 0;border:1px solid #dfe9f6;border-radius:16px;background:#fff}.group-block-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 13px;background:linear-gradient(90deg,#edf6ff,#f9fbff)}.group-block-title{color:var(--navy);font-size:15px;font-weight:850;letter-spacing:-.03em}.group-block-count{padding:3px 7px;border-radius:999px;background:#fff;color:#6980a2;font-size:10px;font-weight:800;white-space:nowrap}.group-table{width:100%;border-collapse:collapse;table-layout:fixed}.group-table th{padding:9px 13px;background:#f8fbff;color:#75839b;font-size:11px;font-weight:850;text-align:left}.group-table th:last-child{text-align:right}.group-table td{padding:11px 13px;border-top:1px solid #edf1f6;color:#33435d;font-size:14px;font-weight:700}.group-table td:last-child{color:var(--blue);font-weight:850;text-align:right}.group-table tr:nth-child(even) td{background:#fbfdff}.group-empty{padding:18px 13px;color:#77869e;font-size:13px;text-align:center}.group-detail-table{margin-top:12px}.group-detail-table .group-table{border-radius:15px;overflow:hidden}.test-trigger{cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}.test-box{display:grid;gap:10px;margin-top:10px}.test-box label{display:grid;gap:5px;color:#61718b;font-size:12px;font-weight:800}.test-box input{width:100%;padding:11px;border:1px solid #cbdcf5;border-radius:10px;background:#fff;color:#233554;font:inherit}.test-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.test-actions button{padding:11px;border-radius:10px;font-weight:850}.test-apply{border:0;background:var(--blue);color:#fff}.test-reset{border:1px solid #cbdcf5;background:#fff;color:#526582}[hidden]{display:none!important}
+    dialog{width:min(calc(100% - 30px),470px);max-height:min(82dvh,720px);padding:0;border:0;border-radius:21px;box-shadow:0 20px 60px rgba(11,37,84,.25)}dialog::backdrop{background:rgba(12,30,67,.34);backdrop-filter:blur(2px)}.modal-head{position:sticky;top:0;z-index:1;padding:17px 17px 12px;border-bottom:1px solid #edf1f7;background:#fff}.modal-head h2{margin:0;color:var(--navy);font-size:18px}.close{width:34px;height:34px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:20px}.modal-body{padding:18px;color:#394861;line-height:1.65}.modal-label{display:inline-block;margin-bottom:8px;color:var(--blue);font-size:12px;font-weight:850}.modal-body h3{margin:0 0 12px;color:var(--navy);font-size:22px;line-height:1.3;letter-spacing:-.05em}.modal-body h4{margin:18px 0 7px;color:var(--navy);font-size:15px}.modal-body p{margin:7px 0;font-size:14px}.modal-body ul{margin:7px 0;padding-left:20px;font-size:14px}.modal-body li{margin:4px 0}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.detail-grid div{padding:10px;border-radius:12px;background:#f7faff}.detail-grid dt{color:#72809a;font-size:11px;font-weight:800}.detail-grid dd{margin:3px 0 0;color:#263754;font-size:13px;font-weight:760;line-height:1.45}.notice{margin:14px 0;padding:12px;border-radius:13px;background:#fff9ed;color:#765a2e;font-size:13px}.action{display:block;margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--blue);color:#fff;text-decoration:none;text-align:center;font-size:14px;font-weight:850}.sub-action{display:block;margin-top:8px;color:var(--blue);text-align:center;font-size:13px;font-weight:800}.copy{width:100%;margin-top:10px;padding:11px;border:1px solid #c4ddff;border-radius:11px;background:#f7fbff;color:var(--blue);font-size:13px;font-weight:850}.allergy{margin-top:18px;padding-top:14px;border-top:1px solid #edf0f5}.allergy h4{margin:0 0 5px}.allergy p{margin:0;color:#69758d;font-size:11px;line-height:1.6}.group-note{margin:-3px 0 13px!important;color:#71809a!important;font-size:13px!important}.group-block{overflow:hidden;margin:12px 0;border:1px solid #dfe9f6;border-radius:16px;background:#fff}.group-block-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 13px;background:linear-gradient(90deg,#edf6ff,#f9fbff)}.group-block-title{color:var(--navy);font-size:15px;font-weight:850;letter-spacing:-.03em}.group-block-count{padding:3px 7px;border-radius:999px;background:#fff;color:#6980a2;font-size:10px;font-weight:800;white-space:nowrap}.group-table{width:100%;border-collapse:collapse;table-layout:fixed}.group-table th{padding:9px 13px;background:#f8fbff;color:#75839b;font-size:11px;font-weight:850;text-align:left}.group-table th:last-child{text-align:right}.group-table td{padding:11px 13px;border-top:1px solid #edf1f6;color:#33435d;font-size:14px;font-weight:700}.group-table td:last-child{color:var(--blue);font-weight:850;text-align:right}.group-table tr:nth-child(even) td{background:#fbfdff}.group-empty{padding:18px 13px;color:#77869e;font-size:13px;text-align:center}.group-detail-table{margin-top:12px}.group-detail-table .group-table{border-radius:15px;overflow:hidden}
+    .group-filter{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0 0 13px;padding:5px;border:1px solid #d8e7fa;border-radius:14px;background:#f7fbff}
+    .group-filter-btn{min-width:0;padding:9px 3px;border:1px solid transparent;border-radius:10px;background:transparent;color:#6e7f99;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif;font-size:12px;font-weight:850;white-space:nowrap}
+    .group-filter-btn.active{border-color:#86b7ff;background:#146be8;color:#fff;box-shadow:0 4px 10px rgba(20,107,232,.2)}
+    .group-filter-summary{margin:-4px 0 10px;color:#71809a;font-size:12px}
+    .group-detail-title{margin:0!important;font-size:16px!important}
+    .test-trigger{cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}.test-box{display:grid;gap:10px;margin-top:10px}.test-box label{display:grid;gap:5px;color:#61718b;font-size:12px;font-weight:800}.test-box input{width:100%;padding:11px;border:1px solid #cbdcf5;border-radius:10px;background:#fff;color:#233554;font:inherit}.test-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.test-actions button{padding:11px;border-radius:10px;font-weight:850}.test-apply{border:0;background:var(--blue);color:#fff}.test-reset{border:1px solid #cbdcf5;background:#fff;color:#526582}[hidden]{display:none!important}
+  
+
+    /* 복무 안내: 연수 종류를 또렷하게 구분 */
+    .duty-section{display:grid;gap:14px;margin-top:14px}
+    .duty-card{overflow:hidden;border:1px solid #d5e5fa;border-radius:17px;background:#fff;box-shadow:0 7px 16px rgba(43,93,169,.07)}
+    .duty-card-head{display:flex;align-items:center;min-height:52px;padding:13px 15px;border-left:6px solid #146be8;background:#eef6ff;color:#0b4eae;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif;font-size:20px;font-weight:900;letter-spacing:-.045em}
+    .duty-card:nth-child(2){border-color:#d5eaf8}
+    .duty-card:nth-child(2) .duty-card-head{border-left-color:#2585c9;background:#eff9ff;color:#12659e}
+    .duty-card:nth-child(3){border-color:#dde3fb}
+    .duty-card:nth-child(3) .duty-card-head{border-left-color:#536fd1;background:#f2f4ff;color:#3d56ad}
+    .duty-card-body{padding:14px 15px 12px;background:#fff}
+    .duty-card-body p{display:flex;align-items:flex-start;gap:7px;margin:0 0 10px;color:#4a5b76;font-size:14px;line-height:1.55}
+    .duty-card-body p:last-child{margin-bottom:0}
+    .duty-card-body b{flex:0 0 62px;color:#174f9d;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif;font-weight:850}
+
   </style>
 </head>
 <body>
   <main class="app">
     <header class="topbar"><div><p class="eyebrow">2026 38기 교육전문직원 임용예정자</p><h1>연수 종합안내</h1></div><button class="bell" id="noticeButton" aria-label="공지사항">🔔</button></header>
-    <section class="hero"><div class="hero-copy"><span class="badge">직무연수</span><h2>2026 38기 교육전문직원<br>임용예정자 직무연수</h2><p>2026. 7. 16.(목) ~ 7. 30.(목)<br>총 67시간</p></div><span class="orb a"></span><span class="orb b"></span><span class="sparkle">✦</span></section>
+    <section class="hero"><div class="hero-copy"><span class="badge">직무연수</span><h2>2026 교육전문직원<br>임용예정자 직무연수</h2><p>2026. 7. 16.(목) ~ 7. 30.(목)<br>총 67시간</p></div><span class="orb a"></span><span class="orb b"></span><span class="sparkle">✦</span></section>
     <nav class="tabs" aria-label="주요 메뉴"><button class="tab active" data-view="today">오늘</button><button class="tab" data-view="all">전체 시간표</button><button class="tab" data-view="guide">안내</button></nav>
     <section class="view" id="todayView"><div class="section-head"><div><p class="section-kicker" id="statusText">다음 연수일</p><h2 id="dayTitle">시간표</h2></div><button class="outline-btn" id="mealButton">🍱 식단 보기</button></div><div class="date-chips" id="dateChips"></div><div class="track" id="trackBox"></div><div class="schedule-list" id="todayList"></div><p class="hours-note" id="hoursNote"></p><p class="sheet-status" id="sheetStatus" aria-live="polite"></p></section>
     <section class="view" id="allView" hidden>
@@ -180,39 +209,36 @@
       }).join('')}</tbody></table>`;
     }
 
-    function groupedGroupsHtml(){
-      if(!state.groups.length){
-        return '<div class="group-empty">분반·분임 장소가 아직 등록되지 않았습니다.</div>';
-      }
+    function groupFilterHtml(activeNo){
+      return `<nav class="group-filter" aria-label="분임토의 선택">${[1,2,3,4,5].map((no)=>`<button class="group-filter-btn ${String(no)===String(activeNo)?'active':''}" data-group-filter="${no}">분임 ${no}</button>`).join('')}</nav>`;
+    }
 
-      const buckets = [];
-      state.groups.forEach((g) => {
-        const name = groupName(g);
-        let bucket = buckets.find((x) => x.name === name);
-        if(!bucket){
-          bucket = {name, rows: []};
-          buckets.push(bucket);
-        }
-        bucket.rows.push(g);
+    function groupGuideHtml(activeNo){
+      const title=`분임토의 ${activeNo}`;
+      const rows=groupRows(title);
+      return `${groupFilterHtml(activeNo)}<p class="group-filter-summary">원하는 분임토의를 선택하면 번호 범위와 강의실을 확인할 수 있어요.</p><section class="group-block group-detail-table"><header class="group-block-head"><span class="group-block-title">${title}</span></header>${groupTableHtml(rows)}</section>`;
+    }
+
+    function bindGroupFilter(){
+      document.querySelectorAll('[data-group-filter]').forEach((button)=>{
+        button.onclick=()=>showGroupsGuide(button.dataset.groupFilter);
       });
+    }
 
-      return buckets.map((bucket) => `
-        <section class="group-block">
-          <header class="group-block-head">
-            <span class="group-block-title">${esc(bucket.name)}</span>
-          </header>
-          ${groupTableHtml(bucket.rows)}
-        </section>
-      `).join('');
+    function showGroupsGuide(activeNo='1'){
+      openModal('분반·분임 안내', `<h3>분반·분임 장소</h3>${groupGuideHtml(activeNo)}`);
+      bindGroupFilter();
     }
 
     function showGroupLesson(day,item){
-      const rows = groupRows(item.title);
+      const no=groupNumber(item.title)||'1';
+      const rows=groupRows(item.title);
       openModal(`${item.title} 안내`, `
         <span class="modal-label">${day.label} · ${item.start} ~ ${item.end}</span>
         <h3>${esc(item.title)}</h3>
         <p class="group-note">내 분임 번호 범위를 확인한 뒤 해당 강의실로 이동하세요.</p>
         <section class="group-block group-detail-table">
+          <header class="group-block-head"><span class="group-block-title">분임토의 ${no}</span></header>
           ${groupTableHtml(rows)}
         </section>
       `);
@@ -220,7 +246,7 @@
     function showLesson(date,index){const day=getDay(date),item=day.items[index];if(item.type==='meal'){showMeal(day,item);return}if(/분임토의/.test(item.title)){showGroupLesson(day,item);return}const [speaker,syllabus]=DETAILS[item.courseKey||item.title]||['추후 안내',['세부 교수요목은 마주온 소통톡 공지를 확인해 주세요.']];const target=item.audience!=='all'?`<div><dt>대상</dt><dd>${audienceText(item.audience)}</dd></div>`:'';openModal('수업 상세',`<span class="modal-label">${day.label} · ${item.start} ~ ${item.end}</span><h3>${esc(item.title)}</h3><dl class="detail-grid"><div><dt>강사</dt><dd>${esc(speaker)}</dd></div><div><dt>장소</dt><dd>${esc(item.location)}</dd></div>${target}<div><dt>연수 형태</dt><dd>${sessionType(day)}</dd></div></dl><h4>교수요목</h4><ul>${syllabus.map(s=>`<li>${esc(s)}</li>`).join('')}</ul><p style="font-size:12px;color:#71809a">※ 운영 상황에 따라 세부 내용 및 장소는 변경될 수 있습니다.</p>`) }
     function showMeal(day=getDay(),item){item=item||day.items.find(i=>i.type==='meal');const type=item?.mealType||'lunch';const menu=state.meals[day.date]?.[type]||[];openModal(`${day.label} ${item?.title||'식단'}`,`<span class="modal-label">${item?.start||'12:00'} ~ ${item?.end||'13:00'} · ${esc(item?.location||'식당')}</span><h3>오늘의 식단</h3>${menu.length?`<ul>${menu.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:'<p>등록된 식단이 없습니다.</p>'}${allergyHtml()}`)}
     function showGuide(key){
-      const groups=groupedGroupsHtml();
+      if(key==='groups'){showGroupsGuide('1');return;}
       const items={
         place:['연수 장소',`
           <span class="modal-label">장소 안내</span>
@@ -273,7 +299,7 @@
         materials:['연수 자료',`<span class="modal-label">자료실</span><h3>연수 자료 바로가기</h3><p>연수 안내문, 교육과정 안내, 과제 양식 등을 확인합니다.</p><a class="action" href="${MATERIALS_LINK}" target="_blank" rel="noopener">자료실 열기 ↗</a>`],
         chat:['마주온 소통톡',`<span class="modal-label">네이버웍스</span><h3>마주온 소통톡</h3><p>연수 안내, 자료 공유, 과제 공지를 수시로 확인하세요.</p><div class="notice">채널 ID<br><b>${CHANNEL_ID}</b></div><button class="copy" id="copyChannel">채널 ID 복사</button>`],
         zoom:['실시간 쌍방향 화상연수 안내',`<span class="modal-label">2026. 7. 28.(화)</span><h3>실시간 쌍방향 화상연수 안내</h3><p><b>가. 수강기간:</b> 2026. 7. 28.(화)</p><p><b>나. 방법:</b> 줌(zoom) 접속 후 수강<br>※ 줌 아이디: <b>851 851 6175</b> / 비밀번호: <b>1234</b></p><p><b>다. 유의사항</b></p><ul><li>수강 전 개인 데스크탑 또는 노트북에 줌(zoom)을 설치합니다.</li><li>접속 시 참가자명을 반드시 <b>OO중 이몽룡</b> 형식으로 수정합니다.</li><li>연수 시간에 수업·회의 등 다른 일정과 중복되지 않도록 사전 조치합니다.</li><li>연수 중에는 상시 카메라(비디오)를 켜야 출석이 인정되며, 얼굴 확인이 되지 않으면 결석 처리될 수 있습니다.</li></ul><a class="action" href="${ZOOM_LINK}" target="_blank" rel="noopener">Zoom 수업 입장 ↗</a><a class="sub-action" href="https://www.zoom.com/ko" target="_blank" rel="noopener">Zoom 설치하기 ↗</a>`],
-        groups:['분반·분임 안내',`<span class="modal-label">시트 연동</span><h3>분반·분임 장소</h3>${groups}`]
+        groups:['분반·분임 안내','']
       };
       const [title,html]=items[key];
       openModal(title,html);
@@ -288,10 +314,10 @@
       const guide=[
         ['place','📍','연수 장소','집합·분반·현장체험 장소 안내'],
         ['duty','💼','복무 안내','출장 처리와 출장지 안내'],
+        ['zoom','💻','화상연수 안내','7.28.(화) Zoom 접속'],
         ['groups','👥','분반·분임 안내','시트에서 장소 자동 반영'],
         ['materials','📄','연수 자료','안내문·과제·각종 자료'],
-        ['chat','💬','마주온 소통톡','공지와 자료 공유 확인'],
-        ['zoom','💻','화상연수 안내','7.28.(화) Zoom 접속']
+        ['chat','💬','마주온 소통톡','공지와 자료 공유 확인']
       ];
       document.querySelector('#guideList').innerHTML=guide.map(([key,icon,title,sub])=>`<button class="guide" data-guide="${key}"><span class="guide-icon">${icon}</span><span><h3>${title}</h3><p>${sub}</p></span></button>`).join('');
       document.querySelectorAll('[data-guide]').forEach(b=>b.onclick=()=>showGuide(b.dataset.guide));
