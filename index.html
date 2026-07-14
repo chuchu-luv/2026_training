@@ -1,4 +1,6 @@
 
+
+
 <!doctype html>
 <html lang="ko">
 <head>
@@ -189,7 +191,14 @@
     }
 
     function findItem(id){ return state.schedule.find(x => String(x.id) === String(id)); }
-    function groupsFor(key){ const k = norm(key); return state.groups.filter(g => norm(g.sequence) === k || norm(g.label).startsWith(k)); }
+    function groupsFor(key){
+      const k = norm(key);
+      return state.groups.filter(g => {
+        const sequence = norm(g.sequence || '');
+        const label = norm(g.label || '');
+        return sequence === k || label.startsWith(k);
+      });
+    }
     function groupTable(key){
       const groups = groupsFor(key);
       if(!groups.length) return `<div class="empty">등록된 분임 장소가 없습니다.</div>`;
@@ -219,7 +228,7 @@
     function showGroupGuide(defaultKey='분임토의 1'){
       const keys = ['분임토의 1','분임토의 2','분임토의 3','분임토의 4','분임토의 5'];
       const buttons = keys.map(k=>`<button data-gkey="${k}" class="${k===defaultKey?'active':''}">${k.replace('분임토의 ','분임 ')}</button>`).join('');
-      openModal('분반·분임 안내', `<h3>분반·분임 장소</h3><div class="group-filter">${buttons}</div><div id="groupTableBox">${groupTable(defaultKey)}</div>`);
+      openModal('상세 안내', `<h3>분반·분임 장소</h3><div class="group-filter">${buttons}</div><div id="groupTableBox">${groupTable(defaultKey)}</div>`);
       document.querySelectorAll('[data-gkey]').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('[data-gkey]').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.querySelector('#groupTableBox').innerHTML=groupTable(btn.dataset.gkey);});
     }
 
@@ -268,12 +277,49 @@
     function switchView(view){ document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden')); document.querySelector(`#${view}View`).classList.remove('hidden'); document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active', b.dataset.view===view)); if(view==='all'){ if(!state.calendarDate) state.calendarDate = calendarFocusDate(); renderCalendar(); renderCalendarList(); } if(view==='guide') renderGuide(); window.scrollTo({top:0, behavior:'smooth'}); }
 
     function normalizeData(data){
-      state.schedule = (data.schedule || []).map((x,i)=>({ id: x.id ?? i, date:x.date, label:x.label || formatKDate(x.date), start:x.start||'', end:x.end||'', title:x.title||'', location:x.location||'', speaker:x.speaker||'', audience:x.audience||'전체', type:x.type||'강의', detail:x.detail||'', syllabus:x.syllabus||'', groupKey:x.groupKey||'', note:x.note||'', show:x.show||'Y' })).filter(x=>x.date && x.start && x.end && x.title).sort((a,b)=> a.date.localeCompare(b.date) || timeToNum(a.start)-timeToNum(b.start));
-      state.meals = data.meals || {}; state.groups = data.groups || []; state.notices = data.notices || [];
+      state.schedule = (data.schedule || [])
+        .map((x,i)=>({
+          id: x.id ?? i,
+          date: x.date || '',
+          label: x.label || (x.date ? formatKDate(x.date) : ''),
+          start: x.start || '',
+          end: x.end || '',
+          title: x.title || '',
+          location: x.location || '',
+          speaker: x.speaker || '',
+          audience: x.audience || '전체',
+          type: x.type || '강의',
+          detail: x.detail || '',
+          syllabus: x.syllabus || '',
+          groupKey: x.groupKey || '',
+          note: x.note || '',
+          show: x.show || 'Y'
+        }))
+        .filter(x=>x.date && x.start && x.end && x.title)
+        .sort((a,b)=> a.date.localeCompare(b.date) || timeToNum(a.start)-timeToNum(b.start));
+
+      state.meals = data.meals || {};
+      state.groups = (data.groups || []).map(g=>({
+        sequence: g.sequence || '',
+        number: g.number || '미정',
+        room: g.room || '',
+        date: g.date || '',
+        label: g.label || `${g.sequence || ''} · ${g.number || '미정'}`
+      }));
+      state.notices = data.notices || [];
       state.lastLoadedAt = data.updatedAt || new Date().toLocaleString('ko-KR');
-      if(!state.selectedDate || !state.schedule.some(x=>x.date===state.selectedDate)) state.selectedDate = chooseInitialDate();
-      if(!state.calendarDate) state.calendarDate = calendarFocusDate();
-      renderToday(); renderCalendar(); renderCalendarList(); renderGuide();
+
+      if(!state.selectedDate || !state.schedule.some(x=>x.date===state.selectedDate)){
+        state.selectedDate = chooseInitialDate();
+      }
+      if(!state.calendarDate){
+        state.calendarDate = calendarFocusDate();
+      }
+
+      renderToday();
+      renderCalendar();
+      renderCalendarList();
+      renderGuide();
     }
 
     function loadData(){
@@ -290,11 +336,22 @@
     document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>switchView(b.dataset.view));
     document.querySelector('#mealBtn').onclick=()=>showMeal(state.selectedDate || chooseInitialDate());
     document.querySelector('#noticeBtn').onclick=()=>{
-      const list = state.notices && state.notices.length
-        ? `<ol class="notice-list">${state.notices.map(n=>`<li>${esc(n.text || n.content || n.notice || '')}</li>`).join('')}</ol>`
+      const notices = (state.notices || [])
+        .map((n, index) => ({
+          number: n.number || n.no || n.order || String(index + 1),
+          text: n.text || n.content || n.notice || n.message || ''
+        }))
+        .filter(n => String(n.text).trim());
+
+      const list = notices.length
+        ? `<ol class="notice-list">${notices.map(n=>`<li>${esc(n.text)}</li>`).join('')}</ol>`
         : '<p>등록된 공지사항이 없습니다.</p>';
-      const updated = state.lastLoadedAt ? `<p class="notice-updated">마지막 갱신: ${esc(state.lastLoadedAt)}</p>` : '';
-      openModal('공지사항', `<span class="modal-label">시트 연동</span><h3>공지사항</h3>${list}${updated}`);
+
+      const updated = state.lastLoadedAt
+        ? `<p class="notice-updated">마지막 갱신: ${esc(state.lastLoadedAt)}</p>`
+        : '';
+
+      openModal('공지사항', `<h3>공지사항</h3>${list}${updated}`);
     };
     document.querySelector('#statusText').onclick=showTestInput;
     document.querySelector('#modalClose').onclick=()=>modal.close(); modal.addEventListener('click',e=>{if(e.target===modal)modal.close();});
