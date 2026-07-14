@@ -141,11 +141,31 @@
       box.querySelectorAll('[data-track]').forEach(btn => btn.onclick = () => { state.track = btn.dataset.track; localStorage.setItem('track', state.track); renderToday(); renderCalendarList(); });
     }
 
+    function lessonHeight(item){
+      if(item.type === '식사') return 50;
+
+      const minutes = Math.max(
+        0,
+        timeToNum(item.end) - timeToNum(item.start)
+      );
+
+      if(minutes <= 60) return 50;
+      if(minutes <= 120) return 100;
+      if(minutes <= 180) return 150;
+
+      return 150;
+    }
+
     function rowHtml(item, idx){
-      const st = statusOf(item); const isMeal = item.type === '식사';
+      const st = statusOf(item);
+      const isMeal = item.type === '식사';
+      const height = lessonHeight(item);
       const cls = `lesson ${isMeal?'meal':`tone${idx%5}`} ${st==='now'&&!isMeal?'now':''} ${st==='past'?'past':''}`;
-      const tag = item.audience && item.audience !== '전체' ? `<span class="tag">${item.audience==='유초등'?'유·초등 분반':'중등 분반'}</span>` : '';
-      return `<button class="${cls}" data-id="${item.id}"><span class="time"><b>${esc(item.start)}</b><i>~</i><b>${esc(item.end)}</b></span><span class="lesson-main"><span class="lesson-title">${st==='now'&&!isMeal?'<span class="now-badge">진행 중</span>':''}${tag}${esc(item.title)}</span><span class="lesson-place">${esc(shortPlace(item.location||''))}</span></span></button>`;
+      const tag = item.audience && item.audience !== '전체'
+        ? `<span class="tag">${item.audience==='유초등'?'유·초등 분반':'중등 분반'}</span>`
+        : '';
+
+      return `<button class="${cls}" data-id="${item.id}" style="min-height:${height}px"><span class="time"><b>${esc(item.start)}</b><i>~</i><b>${esc(item.end)}</b></span><span class="lesson-main"><span class="lesson-title">${st==='now'&&!isMeal?'<span class="now-badge">진행 중</span>':''}${tag}${esc(item.title)}</span><span class="lesson-place">${esc(shortPlace(item.location||''))}</span></span></button>`;
     }
 
     function renderToday(){
