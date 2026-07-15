@@ -357,7 +357,7 @@
       window[cb] = (data) => { normalizeData(data); delete window[cb]; script.remove(); };
       const script = document.createElement('script');
       script.onerror = () => { document.querySelector('#todayList').innerHTML='<div class="empty">Apps Script 데이터를 불러오지 못했습니다.<br>DATA_API_URL과 웹 앱 배포 권한을 확인해 주세요.</div>'; delete window[cb]; };
-      script.src = DATA_API_URL + (DATA_API_URL.includes('?')?'&':'?') + 'callback=' + cb;
+      script.src = DATA_API_URL + (DATA_API_URL.includes('?')?'&':'?') + 'callback=' + cb  + '&_=' + Date.now();
       document.body.appendChild(script);
     }
 
