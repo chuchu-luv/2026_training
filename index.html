@@ -380,7 +380,7 @@
         ? `<p class="notice-updated">마지막 갱신: ${esc(state.lastLoadedAt)}</p>`
         : '';
 
-      openModal('공지사항', `<h3>공지사항</h3>${list}${updated}`);
+      openModal('공지사항', `<h3>안내 사항</h3>${list}${updated}`);
     };
     document.querySelector('#statusText').onclick=showTestInput;
     document.querySelector('#modalClose').onclick=()=>modal.close(); modal.addEventListener('click',e=>{if(e.target===modal)modal.close();});
