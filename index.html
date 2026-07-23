@@ -351,18 +351,64 @@
       renderGuide();
     }
 
-    function loadData(){
-      if(window.google && google.script && google.script.run){ google.script.run.withSuccessHandler(normalizeData).withFailureHandler(err=>{document.querySelector('#todayList').innerHTML=`<div class="empty">데이터를 불러오지 못했습니다.<br>${esc(err.message||err)}</div>`;}).getAppData(); return; }
+    function loadData(forceFresh = false){
+      if(window.google && google.script && google.script.run){
+        google.script.run
+          .withSuccessHandler(normalizeData)
+          .withFailureHandler(err=>{
+            document.querySelector('#todayList').innerHTML=
+              `<div class="empty">데이터를 불러오지 못했습니다.<br>${esc(err.message||err)}</div>`;
+          })
+          .getAppData();
+        return;
+      }
+
       const cb = 'receiveTrainingData_' + Date.now();
-      window[cb] = (data) => { normalizeData(data); delete window[cb]; script.remove(); };
       const script = document.createElement('script');
-      script.onerror = () => { document.querySelector('#todayList').innerHTML='<div class="empty">Apps Script 데이터를 불러오지 못했습니다.<br>DATA_API_URL과 웹 앱 배포 권한을 확인해 주세요.</div>'; delete window[cb]; };
-      script.src = DATA_API_URL + (DATA_API_URL.includes('?')?'&':'?') + 'callback=' + cb  + '&_=' + Date.now();
+
+      window[cb] = (data) => {
+        normalizeData(data);
+        delete window[cb];
+        script.remove();
+      };
+
+      script.onerror = () => {
+        document.querySelector('#todayList').innerHTML=
+          '<div class="empty">Apps Script 데이터를 불러오지 못했습니다.<br>웹 앱 주소와 배포 권한을 확인해 주세요.</div>';
+        delete window[cb];
+        script.remove();
+      };
+
+      let url = DATA_API_URL
+        + (DATA_API_URL.includes('?') ? '&' : '?')
+        + 'callback=' + cb;
+
+      if(forceFresh){
+        url += '&_=' + Date.now();
+      }
+
+      script.src = url;
       document.body.appendChild(script);
     }
 
     document.addEventListener('click', e=>{ const row=e.target.closest('[data-id]'); if(row){ const item=findItem(row.dataset.id); if(item) showDetail(item); }});
-    document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>switchView(b.dataset.view));
+    document.querySelectorAll('[data-view]').forEach(button=>{
+      button.onclick=()=>{
+        const view = button.dataset.view;
+
+        if(view === 'today'){
+          const today = keyDate(nowDate());
+
+          state.selectedDate = state.schedule.some(item=>item.date===today)
+            ? today
+            : chooseInitialDate();
+
+          renderToday();
+        }
+
+        switchView(view);
+      };
+    });
     document.querySelector('#mealBtn').onclick=()=>showMeal(state.selectedDate || chooseInitialDate());
     document.querySelector('#noticeBtn').onclick=()=>{
       const notices = (state.notices || [])
@@ -374,18 +420,19 @@
 
       const list = notices.length
         ? `<ol class="notice-list">${notices.map(n=>`<li>${esc(n.text)}</li>`).join('')}</ol>`
-        : '<p>등록된 공지사항이 없습니다.</p>';
+        : '<p>등록된 안내사항이 없습니다.</p>';
 
       const updated = state.lastLoadedAt
         ? `<p class="notice-updated">마지막 갱신: ${esc(state.lastLoadedAt)}</p>`
         : '';
 
-      openModal('공지사항', `<h3>안내 사항</h3>${list}${updated}`);
+      openModal('안내사항', `${list}${updated}`);
     };
     document.querySelector('#statusText').onclick=showTestInput;
     document.querySelector('#modalClose').onclick=()=>modal.close(); modal.addEventListener('click',e=>{if(e.target===modal)modal.close();});
-    renderGuide(); loadData();
-    setInterval(loadData, 10 * 60 * 1000);
+    renderGuide();
+    loadData(false);
+    setInterval(()=>loadData(true), 10 * 60 * 1000);
     setInterval(()=>{ renderToday(); if(!document.querySelector('#allView').classList.contains('hidden')){ renderCalendar(); renderCalendarList(); } }, 60 * 1000);
   </script>
 </body>
